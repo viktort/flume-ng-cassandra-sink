@@ -24,59 +24,72 @@ import org.apache.flume.Event;
 public class FlumeLogEvent {
 //    private static final Logger logger = LoggerFactory.getLogger(FlumeLogEvent.class);
 
-    private static final String DEFAULT_SOURCE = "not-set";
-    private static final String DEFAULT_HOST = "not-set";
+	private static final String DEFAULT_SOURCE = "not-set";
+	private static final String DEFAULT_HOST = "not-set";
+	private static final String DEFAULT_EVENT = "not-set";
+	private static final String DEFAULT_EVENT_TYPE = "not-set";
 
-    public static final String HEADER_KEY = "key";
-    public static final String HEADER_TIMESTAMP = "timestamp";
-    public static final String HEADER_SOURCE = "src";
-    public static final String HEADER_HOST = "host";
+	public static final String HEADER_KEY = "key";
+	public static final String HEADER_TIMESTAMP = "timestamp";
+	public static final String HEADER_SOURCE = "src";
+	public static final String HEADER_HOST = "host";
+	public static final String HEADER_EVENT = "event";
+	public static final String HEADER_EVENT_TYPE = "event_type";
 
-    private final Event event;
+	private final Event event;
 
-    public FlumeLogEvent(Event event) {
-        this.event = event;
-    }
+	public FlumeLogEvent(Event event) {
+		this.event = event;
+	}
 
-    public Event getEvent() {
-        return event;
-    }
+	public Event getEvent() {
+		return event;
+	}
 
-    public void addHeader(String name, String value) {
-        getHeaderMap().put(name, value);
-    }
+	public void addHeader(String name, String value) {
+		getHeaderMap().put(name, value);
+	}
 
-    public Map<String, String> getHeaderMap() {
-        Map<String, String> headerMap = event.getHeaders();
-        if (null == headerMap) {
-            headerMap = new HashMap<String, String>();
-            event.setHeaders(headerMap);
-        }
-        return headerMap;
-    }
+	public Map<String, String> getHeaderMap() {
+		Map<String, String> headerMap = event.getHeaders();
+		if (null == headerMap) {
+			headerMap = new HashMap<String, String>();
+			event.setHeaders(headerMap);
+		}
+		return headerMap;
+	}
 
-    public String getHeader(String name) {
-        return getHeaderMap().get(name);
-    }
+	public String getHeader(String name) {
+		return getHeaderMap().get(name);
+	}
 
-    public boolean containsHeader(String name) {
-        return getHeaderMap().containsKey(name);
-    }
-    
-    public long getTimestamp() {
-        return Long.parseLong(getHeader(HEADER_TIMESTAMP));
-    }
+	public boolean containsHeader(String name) {
+		return getHeaderMap().containsKey(name);
+	}
 
-    public String getSource() {
-        return containsHeader(FlumeLogEvent.HEADER_SOURCE) ? getHeader(HEADER_SOURCE) : DEFAULT_SOURCE;
-    }
+	public long getTimestamp() {
+		return Long.parseLong(getHeader(HEADER_TIMESTAMP));
+	}
 
-    public String getHost() {
-        return containsHeader(FlumeLogEvent.HEADER_HOST) ? getHeader(HEADER_HOST) : DEFAULT_HOST;
-    }
+	public String getSource() {
+		return containsHeader(FlumeLogEvent.HEADER_SOURCE) ? getHeader(HEADER_SOURCE) : DEFAULT_SOURCE;
+	}
 
-    public String getKey() {
-        return getHeader(HEADER_KEY);
-    }
+	public String getHost() {
+		return containsHeader(FlumeLogEvent.HEADER_HOST) ? getHeader(HEADER_HOST) : DEFAULT_HOST;
+	}
+
+	public String getHeaderEvent() {
+		return containsHeader(FlumeLogEvent.HEADER_EVENT) ? getHeader(HEADER_EVENT) : DEFAULT_EVENT;
+	}
+
+	public String getHeaderEventType() {
+		return containsHeader(FlumeLogEvent.HEADER_EVENT_TYPE) ? getHeader(HEADER_EVENT_TYPE) : DEFAULT_EVENT_TYPE;
+	}
+
+
+	public String getKey() {
+		return getHeader(HEADER_KEY);
+	}
 
 }
